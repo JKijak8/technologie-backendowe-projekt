@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: technologie-backendowe-projekt
+  datasource:
+    url: jdbc:postgresql://${DB_ADDRESS}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
