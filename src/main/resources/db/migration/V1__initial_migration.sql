@@ -1,3 +1,17 @@
+CREATE TYPE ROLES AS ENUM ('NONE', 'DRIVER', 'FORWARDER', 'ADMIN');
+CREATE TYPE STATES AS ENUM (
+    'PENDING',
+    'ACCEPTED',
+    'IN_WAREHOUSE',
+    'ASSIGNED',
+    'IN_TRANSIT',
+    'OUT_FOR_DELIVERY',
+    'DELIVERED',
+    'FAILED_ATTEMPT',
+    'RETURNED',
+    'CANCELLED'
+    );
+
 CREATE TABLE drivers (
     id BIGSERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -22,6 +36,14 @@ CREATE TABLE contracts (
     CONSTRAINT fk_cntr_client FOREIGN KEY (client_id) REFERENCES clients(id)
 );
 
+CREATE TABLE delivery_states (
+    id BIGSERIAL PRIMARY KEY,
+    location VARCHAR(255) NOT NULL,
+    delivery_state STATES NOT NULL,
+    comment TEXT,
+    last_updated TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE loads (
     id BIGSERIAL PRIMARY KEY,
     identifier BIGINT NOT NULL,
@@ -34,7 +56,9 @@ CREATE TABLE loads (
     worth DECIMAL,
     transport_cost DECIMAL,
     contract_id BIGINT,
-    CONSTRAINT fk_ld_contract FOREIGN KEY (contract_id) REFERENCES contracts(id)
+    state_id BIGINT,
+    CONSTRAINT fk_ld_contract FOREIGN KEY (contract_id) REFERENCES contracts(id),
+    CONSTRAINT fk_ld_state FOREIGN KEY (state_id) REFERENCES delivery_states(id)
 );
 
 CREATE TABLE courses (
@@ -48,3 +72,22 @@ CREATE TABLE courses (
     CONSTRAINT fk_crs_load FOREIGN KEY (load_id) REFERENCES loads(id),
     CONSTRAINT fk_crs_driver FOREIGN KEY (driver_id) REFERENCES drivers(id)
 );
+
+CREATE TABLE forwarders (
+    id BIGSERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(12) NOT NULL
+);
+
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ROLES NOT NULL DEFAULT 'NONE',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    forwarder_id BIGINT UNIQUE,
+    driver_id BIGINT UNIQUE,
+    CONSTRAINT fk_usr_forwarder FOREIGN KEY (forwarder_id) REFERENCES forwarders(id),
+    CONSTRAINT fk_usr_driver FOREIGN KEY (driver_id) REFERENCES drivers(id)
+)
