@@ -44,7 +44,4 @@ public class Load {
 
     @Column(name = "worth")
     private Double worth;
-
-    @Column(name = "transport_cost")
-    private Double transportCost;
 }

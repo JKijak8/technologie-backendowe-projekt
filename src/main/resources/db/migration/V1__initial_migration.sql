@@ -59,7 +59,6 @@ CREATE TABLE loads (
     send_date TIMESTAMPTZ,
     delivery_date TIMESTAMPTZ,
     worth DECIMAL,
-    transport_cost DECIMAL,
     contract_id BIGINT NOT NULL,
     state_id BIGINT NOT NULL,
     CONSTRAINT fk_ld_contract FOREIGN KEY (contract_id) REFERENCES contracts(id),
