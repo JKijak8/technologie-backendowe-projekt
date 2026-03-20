@@ -51,7 +51,7 @@ CREATE TABLE delivery_states (
 
 CREATE TABLE loads (
     id BIGSERIAL PRIMARY KEY,
-    identifier VARCHAR(255) NOT NULL,
+    identifier VARCHAR(255) UNIQUE NOT NULL,
     type VARCHAR(255) NOT NULL,
     delivery_time VARCHAR(50),
     size SIZES,
