@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,4 +28,10 @@ public class Driver {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "driver")
+    private List<Course> courses;
+
+    @OneToOne(mappedBy = "driver")
+    private User user;
 }

@@ -26,4 +26,7 @@ public class Forwarder {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @OneToOne(mappedBy = "forwarder")
+    private User user;
 }

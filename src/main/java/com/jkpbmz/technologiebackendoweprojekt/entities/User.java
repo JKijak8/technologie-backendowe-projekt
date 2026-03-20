@@ -35,4 +35,12 @@ public class User {
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIMEZONE")
     private ZonedDateTime createdAt;
+
+    @OneToOne
+    @JoinColumn(name = "forwarder_id")
+    private Forwarder forwarder;
+
+    @OneToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 }

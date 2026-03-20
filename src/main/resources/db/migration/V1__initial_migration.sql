@@ -49,6 +49,15 @@ CREATE TABLE delivery_states (
     last_updated TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE courses (
+    id BIGSERIAL PRIMARY KEY,
+    date TIMESTAMPTZ NOT NULL DEFAULT now(),
+    description TEXT,
+    cost DECIMAL,
+    driver_id BIGINT,
+    CONSTRAINT fk_crs_driver FOREIGN KEY (driver_id) REFERENCES drivers(id)
+);
+
 CREATE TABLE loads (
     id BIGSERIAL PRIMARY KEY,
     identifier VARCHAR(255) UNIQUE NOT NULL,
@@ -61,19 +70,10 @@ CREATE TABLE loads (
     worth DECIMAL,
     contract_id BIGINT NOT NULL,
     state_id BIGINT NOT NULL,
+    course_id BIGINT,
     CONSTRAINT fk_ld_contract FOREIGN KEY (contract_id) REFERENCES contracts(id),
-    CONSTRAINT fk_ld_state FOREIGN KEY (state_id) REFERENCES delivery_states(id)
-);
-
-CREATE TABLE courses (
-    id BIGSERIAL PRIMARY KEY,
-    date TIMESTAMPTZ NOT NULL DEFAULT now(),
-    description TEXT,
-    cost DECIMAL,
-    load_id BIGINT NOT NULL,
-    driver_id BIGINT,
-    CONSTRAINT fk_crs_load FOREIGN KEY (load_id) REFERENCES loads(id),
-    CONSTRAINT fk_crs_driver FOREIGN KEY (driver_id) REFERENCES drivers(id)
+    CONSTRAINT fk_ld_state FOREIGN KEY (state_id) REFERENCES delivery_states(id),
+    CONSTRAINT fk_ld_course FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
 CREATE TABLE forwarders (

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,4 +31,7 @@ public class Client {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "client")
+    private List<Contract> contracts;
 }

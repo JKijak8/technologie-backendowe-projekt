@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "delivery_states")
-public class DeliveryStates {
+public class DeliveryState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,4 +36,7 @@ public class DeliveryStates {
 
     @Column(name = "last_updated", columnDefinition = "TIMESTAMP WITH TIMEZONE")
     private ZonedDateTime lastUpdated;
+
+    @OneToMany(mappedBy = "deliveryState")
+    private List<Load> loads;
 }

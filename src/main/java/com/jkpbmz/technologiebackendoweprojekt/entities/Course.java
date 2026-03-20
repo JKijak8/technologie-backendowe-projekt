@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +29,11 @@ public class Course {
 
     @Column(name = "cost")
     private Double cost;
+
+    @OneToMany(mappedBy = "course")
+    private List<Load> loads;
+
+    @ManyToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 }

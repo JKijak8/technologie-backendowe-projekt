@@ -47,4 +47,16 @@ public class Load {
 
     @Column(name = "worth")
     private Double worth;
+
+    @ManyToOne
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private DeliveryState deliveryState;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 }
