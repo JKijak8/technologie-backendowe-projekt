@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.ZonedDateTime;
 
@@ -31,6 +32,8 @@ public class Load {
     private String deliveryTime;
 
     @Column(name = "size")
+    @Enumerated(EnumType.STRING)
+    @ColumnTransformer(write = "?::SIZES")
     private SizeEnum size;
 
     @Column(name = "weight")
