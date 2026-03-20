@@ -51,9 +51,9 @@ CREATE TABLE delivery_states (
 
 CREATE TABLE loads (
     id BIGSERIAL PRIMARY KEY,
-    identifier BIGINT NOT NULL,
+    identifier VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
-    delivery_time INT,
+    delivery_time VARCHAR(50),
     size SIZES,
     weight DECIMAL,
     send_date TIMESTAMPTZ,
