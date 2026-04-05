@@ -35,5 +35,5 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "driver_id")
-    private Driver driver;
+    private Employee employee;
 }

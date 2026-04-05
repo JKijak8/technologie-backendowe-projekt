@@ -1,4 +1,4 @@
-CREATE TYPE ROLES AS ENUM ('NONE', 'DRIVER', 'FORWARDER', 'ADMIN');
+CREATE TYPE ROLES AS ENUM ('NONE', 'DRIVER', 'FORWARDER', 'MANAGER', 'ADMIN');
 CREATE TYPE STATES AS ENUM (
     'PENDING',
     'ACCEPTED',
@@ -17,11 +17,18 @@ CREATE TYPE SIZES AS ENUM (
     'LARGE'
     );
 
-CREATE TABLE drivers (
+CREATE TABLE positions (
+  id BIGSERIAL PRIMARY KEY,
+  position VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE employees (
     id BIGSERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    phone_number VARCHAR(12) NOT NULL
+    phone_number VARCHAR(12) NOT NULL,
+    position_id BIGINT NOT NULL,
+    CONSTRAINT fk_empl_position FOREIGN KEY (position_id) REFERENCES positions(id)
 );
 
 CREATE TABLE clients (
@@ -55,7 +62,7 @@ CREATE TABLE courses (
     description TEXT,
     cost DECIMAL,
     driver_id BIGINT,
-    CONSTRAINT fk_crs_driver FOREIGN KEY (driver_id) REFERENCES drivers(id)
+    CONSTRAINT fk_crs_driver FOREIGN KEY (driver_id) REFERENCES employees(id)
 );
 
 CREATE TABLE loads (
@@ -76,21 +83,18 @@ CREATE TABLE loads (
     CONSTRAINT fk_ld_course FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
-CREATE TABLE forwarders (
-    id BIGSERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    phone_number VARCHAR(12) NOT NULL
-);
-
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ROLES NOT NULL DEFAULT 'NONE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    forwarder_id BIGINT UNIQUE,
-    driver_id BIGINT UNIQUE,
-    CONSTRAINT fk_usr_forwarder FOREIGN KEY (forwarder_id) REFERENCES forwarders(id),
-    CONSTRAINT fk_usr_driver FOREIGN KEY (driver_id) REFERENCES drivers(id)
-)
+    employee_id BIGINT UNIQUE,
+    CONSTRAINT fk_usr_employee FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+CREATE TABLE users_roles (
+    user_id BIGINT NOT NULL,
+    role ROLES NOT NULL,
+    PRIMARY KEY (user_id, role),
+    CONSTRAINT fk_role_user FOREIGN KEY (user_id) REFERENCES users(id)
+);

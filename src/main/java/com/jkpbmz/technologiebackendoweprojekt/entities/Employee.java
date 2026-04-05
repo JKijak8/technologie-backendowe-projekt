@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "forwarders")
-public class Forwarder {
+@Table(name = "employees")
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,6 +29,13 @@ public class Forwarder {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "forwarder")
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
+
+    @OneToMany(mappedBy = "driver")
+    private List<Course> courses;
+
+    @OneToOne(mappedBy = "employee")
     private User user;
 }

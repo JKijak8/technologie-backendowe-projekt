@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,19 +28,16 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    @ColumnTransformer(write = "?::ROLES")
-    private RoleEnum role;
-
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIMEZONE")
     private ZonedDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "forwarder_id")
-    private Forwarder forwarder;
+    @ElementCollection(targetClass = RoleEnum.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private List<RoleEnum> roles;
 
     @OneToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

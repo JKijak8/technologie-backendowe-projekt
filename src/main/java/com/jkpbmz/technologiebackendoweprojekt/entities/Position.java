@@ -13,25 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "drivers")
-public class Driver {
+@Table(name = "positions")
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "position")
+    private String position;
 
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @OneToMany(mappedBy = "driver")
-    private List<Course> courses;
-
-    @OneToOne(mappedBy = "driver")
-    private User user;
+    @OneToMany(mappedBy = "position")
+    private List<Employee> employees;
 }
