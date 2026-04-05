@@ -58,6 +58,7 @@ CREATE TABLE delivery_states (
 
 CREATE TABLE courses (
     id BIGSERIAL PRIMARY KEY,
+    destination VARCHAR(255) NOT NULL,
     date TIMESTAMPTZ NOT NULL DEFAULT now(),
     description TEXT,
     cost DECIMAL,

@@ -21,6 +21,9 @@ public class Course {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "destination")
+    private String destination;
+
     @Column(name = "date", columnDefinition = "TIMESTAMP WITH TIMEZONE")
     private ZonedDateTime date;
 
