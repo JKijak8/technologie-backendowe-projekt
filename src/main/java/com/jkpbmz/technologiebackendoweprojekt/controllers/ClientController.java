@@ -28,4 +28,10 @@ public class ClientController {
 
         return ResponseEntity.created(uri).body(clientDTO);
     }
+
+    @PutMapping("")
+    public ClientDTO updateClient(@RequestParam("clientId") Long clientId,
+                                                  @RequestBody ClientSaveRequest request) {
+        return clientService.updateClient(clientId, request);
+    }
 }

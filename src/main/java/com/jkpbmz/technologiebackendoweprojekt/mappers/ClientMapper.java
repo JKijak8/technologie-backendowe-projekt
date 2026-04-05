@@ -7,6 +7,7 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ContractSummaryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -23,6 +24,10 @@ public interface ClientMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "contracts", ignore = true)
     Client toClient(ClientSaveRequest request);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contracts", ignore = true)
+    void updateClient(ClientSaveRequest request, @MappingTarget Client client);
 
     @Named("getContracts")
     static List<ContractSummaryDTO> getContracts(List<Contract> contracts) {

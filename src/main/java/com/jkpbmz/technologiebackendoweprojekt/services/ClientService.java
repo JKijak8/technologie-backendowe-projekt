@@ -10,6 +10,8 @@ import com.jkpbmz.technologiebackendoweprojekt.repositories.ClientRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 @Service
 public class ClientService {
@@ -29,6 +31,22 @@ public class ClientService {
         checkIfNipExists(request.getNip());
 
         Client client = clientMapper.toClient(request);
+        clientRepository.save(client);
+
+        return clientMapper.toClientDTO(client);
+    }
+
+    public ClientDTO updateClient(Long clientId, ClientSaveRequest request) {
+        Client client = clientRepository.findById(clientId).orElse(null);
+        if (client == null) {
+            throw new NotFoundException("Client not found");
+        }
+
+        if (!Objects.equals(request.getNip(), client.getNip())) {
+            checkIfNipExists(request.getNip());
+        }
+
+        clientMapper.updateClient(request, client);
         clientRepository.save(client);
 
         return clientMapper.toClientDTO(client);
