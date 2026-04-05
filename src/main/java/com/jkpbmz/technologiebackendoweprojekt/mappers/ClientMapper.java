@@ -4,6 +4,7 @@ import com.jkpbmz.technologiebackendoweprojekt.entities.Client;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Contract;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ClientDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ContractSummaryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +21,8 @@ public interface ClientMapper {
 
     @Mapping(source = "contracts", target = "contracts", qualifiedByName = "getContracts")
     ClientDTO toClientDTO(Client client);
+
+    ClientSummaryDTO toClientSummaryDTO(Client client);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "contracts", ignore = true)

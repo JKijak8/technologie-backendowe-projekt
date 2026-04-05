@@ -6,8 +6,11 @@ import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.ClientMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ClientDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.ClientRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -25,6 +28,11 @@ public class ClientService {
             throw new NotFoundException("Client not found");
         }
         return clientMapper.toClientDTO(client);
+    }
+
+    public Page<ClientSummaryDTO> fetchClientList(Pageable pageable) {
+        Page<Client> clients = clientRepository.findAll(pageable);
+        return clients.map(clientMapper::toClientSummaryDTO);
     }
 
     public ClientDTO createClient(ClientSaveRequest request) {
