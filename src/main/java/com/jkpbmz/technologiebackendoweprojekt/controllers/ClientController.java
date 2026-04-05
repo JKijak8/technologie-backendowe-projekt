@@ -34,4 +34,10 @@ public class ClientController {
                                                   @RequestBody ClientSaveRequest request) {
         return clientService.updateClient(clientId, request);
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteClient(@RequestParam("clientId") Long clientId) {
+        clientService.deleteClient(clientId);
+        return ResponseEntity.noContent().build();
+    }
 }

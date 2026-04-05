@@ -52,6 +52,14 @@ public class ClientService {
         return clientMapper.toClientDTO(client);
     }
 
+    public void deleteClient(Long clientId) {
+        Client client = clientRepository.findById(clientId).orElse(null);
+        if (client == null) {
+            throw new NotFoundException("Client not found");
+        }
+        clientRepository.delete(client);
+    }
+
     private void checkIfNipExists (String nip) {
         if(clientRepository.existsByNip(nip)) {
             throw new ConflictException("Client with this NIP already exists.");

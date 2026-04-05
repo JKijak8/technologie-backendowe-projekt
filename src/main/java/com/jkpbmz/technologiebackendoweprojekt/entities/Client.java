@@ -32,6 +32,6 @@ public class Client {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Contract> contracts;
 }
