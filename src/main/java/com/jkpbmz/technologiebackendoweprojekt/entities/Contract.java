@@ -26,6 +26,9 @@ public class Contract {
     @Column(name = "sender_address")
     private String senderAddress;
 
+    @Column(name = "delivery_address")
+    private String deliveryAddress;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
