@@ -34,7 +34,7 @@ CREATE TABLE employees (
 CREATE TABLE clients (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    nip VARCHAR(10) NOT NULL,
+    nip VARCHAR(10) NOT NULL UNIQUE,
     phone_number VARCHAR(12) NOT NULL,
     email VARCHAR(255)
 );

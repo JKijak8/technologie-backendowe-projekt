@@ -1,9 +1,11 @@
 package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Client;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.ClientMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.ClientDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.ClientRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,5 +23,20 @@ public class ClientService {
             throw new NotFoundException("Client not found");
         }
         return clientMapper.toClientDTO(client);
+    }
+
+    public ClientDTO createClient(ClientSaveRequest request) {
+        checkIfNipExists(request.getNip());
+
+        Client client = clientMapper.toClient(request);
+        clientRepository.save(client);
+
+        return clientMapper.toClientDTO(client);
+    }
+
+    private void checkIfNipExists (String nip) {
+        if(clientRepository.existsByNip(nip)) {
+            throw new ConflictException("Client with this NIP already exists.");
+        }
     }
 }
