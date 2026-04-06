@@ -24,6 +24,9 @@ public interface EmployeeMapper {
     @Mapping(source = "user", target = "user", qualifiedByName = "getUserSummary")
     EmployeeDTO toEmployeeDTO(Employee employee);
 
+    @Mapping(source = "position", target = "position", qualifiedByName = "positionToString")
+    EmployeeSummaryDTO toEmployeeSummaryDTO(Employee employee);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "position", target = "position", qualifiedByName = "getPosition")
     Employee toEmployee(EmployeeCreateRequest request, @Context PositionRepository positionRepository);
@@ -51,5 +54,10 @@ public interface EmployeeMapper {
             throw new NotFoundException("Position not found");
         }
         return position;
+    }
+
+    @Named("positionToString")
+    static String positionToString(Position position) {
+        return position.getPosition();
     }
 }

@@ -5,9 +5,12 @@ import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.EmployeeMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeCreateRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.EmployeeRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.PositionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -24,6 +27,11 @@ public class EmployeeService {
             throw new NotFoundException("Employee not found.");
         }
         return employeeMapper.toEmployeeDTO(employee);
+    }
+
+    public Page<EmployeeSummaryDTO> fetchEmployeeList(Pageable pageable) {
+        Page<Employee> employees = employeeRepository.findAll(pageable);
+        return employees.map(employeeMapper::toEmployeeSummaryDTO);
     }
 
     public EmployeeDTO createEmployee(EmployeeCreateRequest request) {
