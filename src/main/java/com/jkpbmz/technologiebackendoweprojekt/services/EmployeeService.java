@@ -32,4 +32,12 @@ public class EmployeeService {
 
         return employeeMapper.toEmployeeDTO(employee);
     }
+
+    public void deleteEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id).orElse(null);
+        if (employee == null) {
+            throw new NotFoundException("Employee not found.");
+        }
+        employeeRepository.delete(employee);
+    }
 }

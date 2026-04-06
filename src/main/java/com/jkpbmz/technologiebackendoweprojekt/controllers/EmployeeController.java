@@ -29,4 +29,10 @@ public class EmployeeController {
 
         return ResponseEntity.created(uri).body(employeeDTO);
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteEmployee(@RequestParam("employeeId") Long employeeId) {
+        employeeService.deleteEmployee(employeeId);
+        return ResponseEntity.noContent().build();
+    }
 }
