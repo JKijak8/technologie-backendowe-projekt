@@ -1,12 +1,14 @@
 package com.jkpbmz.technologiebackendoweprojekt.controllers;
 
+import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeCreateRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.EmployeeService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @AllArgsConstructor
 @RestController
@@ -17,5 +19,14 @@ public class EmployeeController {
     @GetMapping("")
     public EmployeeDTO findEmployee(@RequestParam("employeeId") Long employeeId) {
         return employeeService.fetchEmployee(employeeId);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeCreateRequest employeeCreateRequest,
+                                                    UriComponentsBuilder uriComponentsBuilder) {
+        EmployeeDTO employeeDTO = employeeService.createEmployee(employeeCreateRequest);
+        URI uri = uriComponentsBuilder.path("/employee?employeeId={id}").buildAndExpand(employeeDTO.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(employeeDTO);
     }
 }
