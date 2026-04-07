@@ -1,5 +1,6 @@
 package com.jkpbmz.technologiebackendoweprojekt.projections;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jkpbmz.technologiebackendoweprojekt.enums.RoleEnum;
 import lombok.Data;
 

@@ -4,9 +4,11 @@ import com.jkpbmz.technologiebackendoweprojekt.entities.Course;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Employee;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Position;
 import com.jkpbmz.technologiebackendoweprojekt.entities.User;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.projections.*;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.PositionRepository;
+import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -29,7 +31,10 @@ public interface EmployeeMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "position", target = "position", qualifiedByName = "getPosition")
-    Employee toEmployee(EmployeeCreateRequest request, @Context PositionRepository positionRepository);
+    @Mapping(source = "user", target = "user", qualifiedByName = "getUser")
+    Employee toEmployee(EmployeeSaveRequest request,
+                        @Context PositionRepository positionRepository,
+                        @Context UserRepository userRepository);
 
     @Named("getPositionDTO")
     static PositionDTO getPositionDTO(Position position) {
@@ -54,6 +59,14 @@ public interface EmployeeMapper {
             throw new NotFoundException("Position not found");
         }
         return position;
+    }
+
+    @Named("getUser")
+    static User getUser(UserSaveRequest user, @Context UserRepository userRepository) {
+        if (user == null) return null;
+        else if (user.isIdOnly()) return userRepository.findById(user.getId()).orElse(null);
+        else if (user.isDataOnly()) return USER_MAPPER.toUser(user);
+        else throw new BadRequestException("Payload should contain either User ID or only User data.");
     }
 
     @Named("positionToString")

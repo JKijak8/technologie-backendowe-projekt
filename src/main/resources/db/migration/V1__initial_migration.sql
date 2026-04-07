@@ -17,9 +17,16 @@ CREATE TYPE SIZES AS ENUM (
     'LARGE'
     );
 
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE positions (
-  id BIGSERIAL PRIMARY KEY,
-  position VARCHAR(50) NOT NULL UNIQUE
+    id BIGSERIAL PRIMARY KEY,
+    position VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE employees (
@@ -28,7 +35,9 @@ CREATE TABLE employees (
     last_name VARCHAR(50) NOT NULL,
     phone_number VARCHAR(12) NOT NULL,
     position_id BIGINT NOT NULL,
-    CONSTRAINT fk_empl_position FOREIGN KEY (position_id) REFERENCES positions(id)
+    user_id BIGINT UNIQUE,
+    CONSTRAINT fk_empl_position FOREIGN KEY (position_id) REFERENCES positions(id),
+    CONSTRAINT fk_empl_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE clients (
@@ -82,15 +91,6 @@ CREATE TABLE loads (
     CONSTRAINT fk_ld_contract FOREIGN KEY (contract_id) REFERENCES contracts(id),
     CONSTRAINT fk_ld_state FOREIGN KEY (state_id) REFERENCES delivery_states(id),
     CONSTRAINT fk_ld_course FOREIGN KEY (course_id) REFERENCES courses(id)
-);
-
-CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    employee_id BIGINT UNIQUE,
-    CONSTRAINT fk_usr_employee FOREIGN KEY (employee_id) REFERENCES employees(id)
 );
 
 CREATE TABLE users_roles (

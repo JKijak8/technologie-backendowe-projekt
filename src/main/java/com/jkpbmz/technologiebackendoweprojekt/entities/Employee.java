@@ -36,6 +36,7 @@ public class Employee {
     @OneToMany(mappedBy = "driver")
     private List<Course> courses;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 }

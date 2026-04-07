@@ -1,7 +1,7 @@
 package com.jkpbmz.technologiebackendoweprojekt.controllers;
 
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
-import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeCreateRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.EmployeeService;
@@ -37,9 +37,9 @@ public class EmployeeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeCreateRequest employeeCreateRequest,
+    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeSaveRequest employeeSaveRequest,
                                                     UriComponentsBuilder uriComponentsBuilder) {
-        EmployeeDTO employeeDTO = employeeService.createEmployee(employeeCreateRequest);
+        EmployeeDTO employeeDTO = employeeService.createEmployee(employeeSaveRequest);
         URI uri = uriComponentsBuilder.path("/employee?employeeId={id}").buildAndExpand(employeeDTO.getId()).toUri();
 
         return ResponseEntity.created(uri).body(employeeDTO);
