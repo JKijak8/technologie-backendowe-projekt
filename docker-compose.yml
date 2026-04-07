@@ -1,0 +1,39 @@
+services:
+  db:
+    container_name: technologie_backendowe_projekt
+    image: postgres:18-alpine3.23
+    user: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - technologie-backendowe:/var/lib/postgresql
+    env_file:
+      - "./database.env"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "backend_projekt" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+  api:
+    env_file:
+      - "./docker.env"
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+  flyway:
+    platform: linux/amd64
+    env_file:
+      - "./flyway.env"
+    image: redgate/flyway:11-alpine
+    command: -connectRetries=20 migrate
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  technologie-backendowe:
