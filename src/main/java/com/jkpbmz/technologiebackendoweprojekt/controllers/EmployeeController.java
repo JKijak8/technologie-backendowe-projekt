@@ -45,6 +45,12 @@ public class EmployeeController {
         return ResponseEntity.created(uri).body(employeeDTO);
     }
 
+    @PutMapping("")
+    public EmployeeDTO updateEmployee(@RequestParam("employeeId") Long employeeId,
+                                      @RequestBody EmployeeSaveRequest employeeSaveRequest) {
+        return employeeService.updateEmployee(employeeId, employeeSaveRequest);
+    }
+
     @DeleteMapping("")
     public ResponseEntity<Void> deleteEmployee(@RequestParam("employeeId") Long employeeId) {
         employeeService.deleteEmployee(employeeId);

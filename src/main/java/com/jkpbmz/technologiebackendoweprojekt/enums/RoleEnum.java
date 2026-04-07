@@ -4,5 +4,6 @@ public enum RoleEnum {
     NONE,
     DRIVER,
     FORWARDER,
+    MANAGER,
     ADMIN
 }

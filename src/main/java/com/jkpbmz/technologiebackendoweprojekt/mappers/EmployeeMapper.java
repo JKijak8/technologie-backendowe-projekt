@@ -5,6 +5,7 @@ import com.jkpbmz.technologiebackendoweprojekt.entities.Employee;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Position;
 import com.jkpbmz.technologiebackendoweprojekt.entities.User;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.projections.*;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.PositionRepository;
@@ -13,6 +14,7 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -33,6 +35,15 @@ public interface EmployeeMapper {
     @Mapping(source = "position", target = "position", qualifiedByName = "getPosition")
     @Mapping(source = "user", target = "user", qualifiedByName = "getUser")
     Employee toEmployee(EmployeeSaveRequest request,
+                        @Context PositionRepository positionRepository,
+                        @Context UserRepository userRepository);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "position", target = "position", qualifiedByName = "getPosition")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "courses", ignore = true)
+    void updateEmployee(EmployeeSaveRequest request,
+                        @MappingTarget Employee employee,
                         @Context PositionRepository positionRepository,
                         @Context UserRepository userRepository);
 
@@ -62,11 +73,30 @@ public interface EmployeeMapper {
     }
 
     @Named("getUser")
-    static User getUser(UserSaveRequest user, @Context UserRepository userRepository) {
-        if (user == null) return null;
-        else if (user.isIdOnly()) return userRepository.findById(user.getId()).orElse(null);
-        else if (user.isDataOnly()) return USER_MAPPER.toUser(user);
+    static User getUser(UserSaveRequest request, @Context UserRepository userRepository) {
+        if (request == null) return null;
+        else if (request.isIdOnly()) return userRepository.findById(request.getId()).orElse(null);
+        else if (request.isDataOnly()) return USER_MAPPER.toUser(request);
         else throw new BadRequestException("Payload should contain either User ID or only User data.");
+    }
+
+    @AfterMapping
+    static void updateUser(EmployeeSaveRequest employeeSaveRequest,
+                           @MappingTarget Employee employee,
+                           @Context UserRepository userRepository) {
+        Long currentUserId = (employee.getUser() != null) ? employee.getUser().getId() : null;
+
+        UserSaveRequest userSaveRequest = employeeSaveRequest.getUser();
+
+        if (userSaveRequest == null) employee.setUser(null);
+        else if (userSaveRequest.isIdOnly()) {
+            if (!Objects.equals(userSaveRequest.getId(), currentUserId)) employee.setUser(
+                    userRepository.findById(userSaveRequest.getId()).orElse(null)
+            );
+        }
+        else if (userSaveRequest.isDataOnly()) employee.setUser(USER_MAPPER.toUser(userSaveRequest));
+        else if (Objects.equals(userSaveRequest.getId(), currentUserId)) USER_MAPPER.updateUser(userSaveRequest, employee.getUser());
+        else throw new BadRequestException("Payload should contain either User ID, only User data to create a new User, or already assigned ID and new data to update.");
     }
 
     @Named("positionToString")
