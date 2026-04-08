@@ -11,7 +11,6 @@ public class LoadDTO {
     private SizeEnum size;
     private Float weight;
     private Double worth;
-
     private ContractSummaryDTO contract;
     private DeliveryStateDTO deliveryState;
     private Long courseId;
