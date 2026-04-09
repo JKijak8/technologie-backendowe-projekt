@@ -30,6 +30,11 @@ public interface CourseMapper {
     @Mapping(source = "loads", target = "loads", qualifiedByName = "getLoadSummaries")
     CourseDTO toCourseDTO(Course course);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "loads", ignore = true)
+    @Mapping(source = "driver", target = "driver", qualifiedByName = "getDriver")
+    void updateCourse(CourseSaveRequest request, @MappingTarget Course course, @Context EmployeeRepository employeeRepository);
+
     @Named("getLoadSummaries")
     static List<LoadSummaryDTO> getLoadSummaries(List<Load> loads) {
         if (loads == null) return null;

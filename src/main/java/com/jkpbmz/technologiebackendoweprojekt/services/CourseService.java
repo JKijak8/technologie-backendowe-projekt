@@ -32,4 +32,14 @@ public class CourseService {
 
         return courseMapper.toCourseDTO(course);
     }
+
+    public CourseDTO updateCourse(Long id, CourseSaveRequest request) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course == null) {
+            throw new NotFoundException("Course not found");
+        }
+        courseMapper.updateCourse(request, course, employeeRepository);
+        courseRepository.save(course);
+        return courseMapper.toCourseDTO(course);
+    }
 }

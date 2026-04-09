@@ -29,4 +29,9 @@ public class CourseController {
 
         return ResponseEntity.created(uri).body(courseDTO);
     }
+
+    @PutMapping("")
+    public CourseDTO updateCourse(@RequestParam("courseId") Long courseId, @RequestBody CourseSaveRequest request) {
+        return courseService.updateCourse(courseId, request);
+    }
 }
