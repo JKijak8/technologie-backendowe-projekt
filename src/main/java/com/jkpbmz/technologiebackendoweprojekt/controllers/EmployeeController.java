@@ -1,9 +1,9 @@
 package com.jkpbmz.technologiebackendoweprojekt.controllers;
 
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
-import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeSaveRequest;
-import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeDTO;
-import com.jkpbmz.technologiebackendoweprojekt.projections.EmployeeSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

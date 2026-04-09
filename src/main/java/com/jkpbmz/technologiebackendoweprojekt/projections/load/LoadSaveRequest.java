@@ -1,4 +1,4 @@
-package com.jkpbmz.technologiebackendoweprojekt.projections;
+package com.jkpbmz.technologiebackendoweprojekt.projections.load;
 
 import com.jkpbmz.technologiebackendoweprojekt.enums.SizeEnum;
 import lombok.Data;

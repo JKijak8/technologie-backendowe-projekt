@@ -1,7 +1,7 @@
 package com.jkpbmz.technologiebackendoweprojekt.controllers;
 
-import com.jkpbmz.technologiebackendoweprojekt.projections.LoadDTO;
-import com.jkpbmz.technologiebackendoweprojekt.projections.LoadSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.services.LoadService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

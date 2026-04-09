@@ -1,7 +1,9 @@
 package com.jkpbmz.technologiebackendoweprojekt.controllers;
 
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
-import com.jkpbmz.technologiebackendoweprojekt.projections.*;
+import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,7 +38,7 @@ public class ClientController {
 
     @PutMapping("")
     public ClientDTO updateClient(@RequestParam("clientId") Long clientId,
-                                                  @RequestBody ClientSaveRequest request) {
+                                  @RequestBody ClientSaveRequest request) {
         return clientService.updateClient(clientId, request);
     }
 

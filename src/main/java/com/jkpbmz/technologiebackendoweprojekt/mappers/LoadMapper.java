@@ -1,8 +1,8 @@
 package com.jkpbmz.technologiebackendoweprojekt.mappers;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Load;
-import com.jkpbmz.technologiebackendoweprojekt.projections.LoadDTO;
-import com.jkpbmz.technologiebackendoweprojekt.projections.LoadSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,6 +1,8 @@
-package com.jkpbmz.technologiebackendoweprojekt.projections;
+package com.jkpbmz.technologiebackendoweprojekt.projections.load;
 
 import com.jkpbmz.technologiebackendoweprojekt.enums.SizeEnum;
+import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.delivery_state.DeliveryStateDTO;
 import lombok.Data;
 
 @Data

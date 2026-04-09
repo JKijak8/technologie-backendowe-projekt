@@ -1,8 +1,8 @@
 package com.jkpbmz.technologiebackendoweprojekt.mappers;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.User;
-import com.jkpbmz.technologiebackendoweprojekt.projections.UserSaveRequest;
-import com.jkpbmz.technologiebackendoweprojekt.projections.UserSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSummaryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

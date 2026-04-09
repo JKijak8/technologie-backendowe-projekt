@@ -1,4 +1,4 @@
-package com.jkpbmz.technologiebackendoweprojekt.projections;
+package com.jkpbmz.technologiebackendoweprojekt.projections.employee;
 
 import lombok.Data;
 

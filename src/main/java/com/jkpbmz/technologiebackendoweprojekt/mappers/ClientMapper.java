@@ -2,10 +2,10 @@ package com.jkpbmz.technologiebackendoweprojekt.mappers;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Client;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Contract;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ClientDTO;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSaveRequest;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ClientSummaryDTO;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ContractSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSummaryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

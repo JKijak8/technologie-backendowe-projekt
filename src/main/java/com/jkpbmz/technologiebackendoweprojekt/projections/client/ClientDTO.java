@@ -1,5 +1,6 @@
-package com.jkpbmz.technologiebackendoweprojekt.projections;
+package com.jkpbmz.technologiebackendoweprojekt.projections.client;
 
+import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSummaryDTO;
 import lombok.Data;
 
 import java.util.List;

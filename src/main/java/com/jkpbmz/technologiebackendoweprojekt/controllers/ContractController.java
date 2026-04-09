@@ -1,8 +1,8 @@
 package com.jkpbmz.technologiebackendoweprojekt.controllers;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ContractDTO;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ContractSaveRequest;
-import com.jkpbmz.technologiebackendoweprojekt.projections.ContractSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.ContractService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.jkpbmz.technologiebackendoweprojekt.projections;
+package com.jkpbmz.technologiebackendoweprojekt.projections.delivery_state;
 
 import com.jkpbmz.technologiebackendoweprojekt.enums.DeliveryStatesEnum;
 import lombok.Data;

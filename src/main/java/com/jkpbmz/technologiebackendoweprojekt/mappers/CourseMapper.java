@@ -1,7 +1,7 @@
 package com.jkpbmz.technologiebackendoweprojekt.mappers;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Course;
-import com.jkpbmz.technologiebackendoweprojekt.projections.CourseSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseSummaryDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
