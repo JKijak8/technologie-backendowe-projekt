@@ -17,6 +17,11 @@ public class PositionController {
     private final PositionService positionService;
 
     @GetMapping("")
+    public PositionDTO getPosition(@RequestParam("positionId") Long id) {
+        return positionService.fetchPosition(id);
+    }
+
+    @GetMapping("/list")
     public List<PositionDTO> findAllPositions() {
         return positionService.fetchAllPositions();
     }

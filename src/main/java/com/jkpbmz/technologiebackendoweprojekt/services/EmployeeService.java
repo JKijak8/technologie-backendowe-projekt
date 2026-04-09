@@ -22,7 +22,7 @@ import java.util.Objects;
 @Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
-    private final PositionRepository positionRepository;
+    private final PositionService positionService;
     private final UserRepository userRepository;
 
     private final EmployeeMapper employeeMapper;
@@ -45,7 +45,7 @@ public class EmployeeService {
             if (request.getUser().isIdOnly()) checkUser(request.getUser().getId());
             else checkEmail(request.getUser().getEmail());
         }
-        Employee employee = employeeMapper.toEmployee(request, positionRepository, userRepository);
+        Employee employee = employeeMapper.toEmployee(request, positionService, userRepository);
         employeeRepository.save(employee);
 
         return employeeMapper.toEmployeeDTO(employee);
@@ -69,7 +69,7 @@ public class EmployeeService {
             ) || request.getUser().isDataOnly()) checkEmail(request.getUser().getEmail());
         }
 
-        employeeMapper.updateEmployee(request, employee, positionRepository, userRepository);
+        employeeMapper.updateEmployee(request, employee, positionService, userRepository);
         employeeRepository.save(employee);
         return employeeMapper.toEmployeeDTO(employee);
     }

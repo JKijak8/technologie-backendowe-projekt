@@ -14,8 +14,8 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSumm
 import com.jkpbmz.technologiebackendoweprojekt.projections.position.PositionDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSummaryDTO;
-import com.jkpbmz.technologiebackendoweprojekt.repositories.PositionRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
+import com.jkpbmz.technologiebackendoweprojekt.services.PositionService;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -44,7 +44,7 @@ public interface EmployeeMapper {
     @Mapping(source = "position", target = "position", qualifiedByName = "getPosition")
     @Mapping(source = "user", target = "user", qualifiedByName = "getUser")
     Employee toEmployee(EmployeeSaveRequest request,
-                        @Context PositionRepository positionRepository,
+                        @Context PositionService positionService,
                         @Context UserRepository userRepository);
 
     @Mapping(target = "id", ignore = true)
@@ -53,7 +53,7 @@ public interface EmployeeMapper {
     @Mapping(target = "courses", ignore = true)
     void updateEmployee(EmployeeSaveRequest request,
                         @MappingTarget Employee employee,
-                        @Context PositionRepository positionRepository,
+                        @Context PositionService positionService,
                         @Context UserRepository userRepository);
 
     @Named("getPositionDTO")
@@ -73,12 +73,8 @@ public interface EmployeeMapper {
     }
 
     @Named("getPosition")
-    static Position getPosition(Long id, @Context PositionRepository positionRepository) {
-        Position position = positionRepository.findById(id).orElse(null);
-        if (position == null) {
-            throw new NotFoundException("Position not found");
-        }
-        return position;
+    static Position getPosition(Long id, @Context PositionService positionService) {
+        return positionService.getPosition(id);
     }
 
     @Named("getUser")

@@ -2,6 +2,7 @@ package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Position;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.PositionMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.position.PositionDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.PositionRepository;
@@ -17,6 +18,10 @@ public class PositionService {
     private PositionRepository positionRepository;
 
     private PositionMapper positionMapper;
+
+    public PositionDTO fetchPosition(Long id) {
+        return positionMapper.toPositionDTO(getPosition(id));
+    }
 
     public List<PositionDTO> fetchAllPositions() {
         List<Position> positions = positionRepository.findAll();
@@ -35,5 +40,13 @@ public class PositionService {
 
     private void checkIfPositionExists(String position) {
         if (positionRepository.existsByPosition(position)) throw new ConflictException("Position with this name already exists.");
+    }
+
+    public Position getPosition(Long id) {
+        Position position = positionRepository.findById(id).orElse(null);
+        if (position == null) {
+            throw new NotFoundException("Position not found");
+        }
+        return position;
     }
 }
