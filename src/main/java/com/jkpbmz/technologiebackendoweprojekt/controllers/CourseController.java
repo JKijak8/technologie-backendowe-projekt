@@ -34,4 +34,10 @@ public class CourseController {
     public CourseDTO updateCourse(@RequestParam("courseId") Long courseId, @RequestBody CourseSaveRequest request) {
         return courseService.updateCourse(courseId, request);
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteCourse(@RequestParam("courseId") Long courseId) {
+        courseService.deleteCourse(courseId);
+        return ResponseEntity.noContent().build();
+    }
 }

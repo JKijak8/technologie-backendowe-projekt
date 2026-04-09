@@ -42,4 +42,10 @@ public class CourseService {
         courseRepository.save(course);
         return courseMapper.toCourseDTO(course);
     }
+
+    public void deleteCourse(Long id) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course == null) throw new NotFoundException("Course not found");
+        courseRepository.delete(course);
+    }
 }
