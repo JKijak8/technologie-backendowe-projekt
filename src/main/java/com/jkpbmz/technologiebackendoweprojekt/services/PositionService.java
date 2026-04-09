@@ -38,8 +38,9 @@ public class PositionService {
         return positionMapper.toPositionDTO(position);
     }
 
-    private void checkIfPositionExists(String position) {
-        if (positionRepository.existsByPosition(position)) throw new ConflictException("Position with this name already exists.");
+    public void deletePosition(Long id) {
+        positionRepository.findById(id).orElseThrow(() -> new NotFoundException("Position not found"));
+        positionRepository.deleteById(id);
     }
 
     public Position getPosition(Long id) {
@@ -48,5 +49,9 @@ public class PositionService {
             throw new NotFoundException("Position not found");
         }
         return position;
+    }
+
+    private void checkIfPositionExists(String position) {
+        if (positionRepository.existsByPosition(position)) throw new ConflictException("Position with this name already exists.");
     }
 }

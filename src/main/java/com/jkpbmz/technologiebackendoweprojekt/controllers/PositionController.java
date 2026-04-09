@@ -33,4 +33,10 @@ public class PositionController {
         URI uri = uriComponentsBuilder.path("/position?positionId={id}").buildAndExpand(positionDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(positionDTO);
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> deletePosition(@RequestParam("positionId") Long id) {
+        positionService.deletePosition(id);
+        return ResponseEntity.noContent().build();
+    }
 }
