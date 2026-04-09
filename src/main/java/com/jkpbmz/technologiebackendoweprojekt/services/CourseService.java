@@ -5,9 +5,12 @@ import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.CourseMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.CourseRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.EmployeeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -24,6 +27,11 @@ public class CourseService {
             throw new NotFoundException("Course not found");
         }
         return courseMapper.toCourseDTO(course);
+    }
+
+    public Page<CourseSummaryDTO> fetchCourseList(Pageable pageable) {
+        Page<Course> coursePage = courseRepository.findAll(pageable);
+        return coursePage.map(courseMapper::toCourseSummaryDTO);
     }
 
     public CourseDTO createCourse(CourseSaveRequest request) {
