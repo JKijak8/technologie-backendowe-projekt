@@ -7,6 +7,7 @@ import com.jkpbmz.technologiebackendoweprojekt.entities.User;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.employee.DriverSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSummaryDTO;
@@ -18,6 +19,7 @@ import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.sql.Driver;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,6 +37,8 @@ public interface EmployeeMapper {
 
     @Mapping(source = "position", target = "position", qualifiedByName = "positionToString")
     EmployeeSummaryDTO toEmployeeSummaryDTO(Employee employee);
+
+    DriverSummaryDTO toDriverSummaryDTO(Driver driver);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "position", target = "position", qualifiedByName = "getPosition")
