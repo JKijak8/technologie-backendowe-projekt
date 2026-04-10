@@ -31,4 +31,9 @@ public class UserController {
 
         return ResponseEntity.created(uri).body(user);
     }
+
+    @PutMapping("")
+    public UserSummaryDTO updateUser(@RequestBody UserSaveRequest request) {
+        return userService.updateUser(request);
+    }
 }
