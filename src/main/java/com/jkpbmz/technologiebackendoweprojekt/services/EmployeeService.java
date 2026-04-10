@@ -9,7 +9,6 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSave
 import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.EmployeeRepository;
-import com.jkpbmz.technologiebackendoweprojekt.repositories.PositionRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +23,8 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final PositionService positionService;
     private final UserRepository userRepository;
+
+    private final UserService userService;
 
     private final EmployeeMapper employeeMapper;
 
@@ -42,8 +43,11 @@ public class EmployeeService {
 
     public EmployeeDTO createEmployee(EmployeeSaveRequest request) {
         if (request.getUser() != null) {
-            if (request.getUser().isIdOnly()) checkUser(request.getUser().getId());
-            else checkEmail(request.getUser().getEmail());
+            if (request.getUser().isIdOnly()) {
+                userService.checkIfUserExists(request.getUser().getId());
+                checkIfEmployeeAssigned(request.getUser().getId());
+            }
+            else userService.checkEmail(request.getUser().getEmail());
         }
         Employee employee = employeeMapper.toEmployee(request, positionService, userRepository);
         employeeRepository.save(employee);
@@ -62,11 +66,14 @@ public class EmployeeService {
                     !request.getUser().getId().equals(employee.getUser().getId())) {
                 throw new BadRequestException("Id for User data update does not match the user's Id.");
             }
-            if (request.getUser().isIdOnly()) checkUser(request.getUser().getId());
+            if (request.getUser().isIdOnly()) {
+                userService.checkIfUserExists(request.getUser().getId());
+                checkIfEmployeeAssigned(request.getUser().getId());
+            }
             else if (!Objects.equals(
                     request.getUser().getEmail(),
                     employee.getUser().getEmail()
-            ) || request.getUser().isDataOnly()) checkEmail(request.getUser().getEmail());
+            ) || request.getUser().isDataOnly()) userService.checkEmail(request.getUser().getEmail());
         }
 
         employeeMapper.updateEmployee(request, employee, positionService, userRepository);
@@ -82,14 +89,9 @@ public class EmployeeService {
         employeeRepository.delete(employee);
     }
 
-    private void checkUser(Long id) {
-        if (!userRepository.existsById(id)) throw new NotFoundException("User not found.");
+    private void checkIfEmployeeAssigned(Long id) {
         if (employeeRepository.existsByUser_Id(id)) {
             throw new ConflictException("This account already has an assigned employee.");
         }
-    }
-
-    private void checkEmail(String email) {
-        if (userRepository.existsByEmail(email)) throw new ConflictException("An account with this email already exists.");
     }
 }

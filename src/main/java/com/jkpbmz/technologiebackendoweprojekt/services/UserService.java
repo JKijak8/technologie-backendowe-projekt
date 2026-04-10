@@ -1,7 +1,10 @@
 package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.User;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.UserMapper;
+import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,5 +22,22 @@ public class UserService {
     public Page<UserSummaryDTO> fetchUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         return users.map(userMapper::toUserSummaryDTO);
+    }
+
+    public UserSummaryDTO createUser(UserSaveRequest request) {
+        checkEmail(request.getEmail());
+
+        User user = userMapper.toUser(request);
+        user = userRepository.save(user);
+
+        return userMapper.toUserSummaryDTO(user);
+    }
+
+    protected void checkIfUserExists(Long id) {
+        if (!userRepository.existsById(id)) throw new NotFoundException("User not found.");
+    }
+
+    protected void checkEmail(String email) {
+        if (userRepository.existsByEmail(email)) throw new ConflictException("An account with this email already exists.");
     }
 }
