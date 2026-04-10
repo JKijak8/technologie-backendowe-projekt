@@ -54,6 +54,11 @@ public class UserService {
         return userMapper.toUserSummaryDTO(user);
     }
 
+    public void deleteUser(Long id) {
+        checkIfUserExists(id);
+        userRepository.deleteById(id);
+    }
+
     protected void checkIfUserExists(Long id) {
         if (!userRepository.existsById(id)) throw new NotFoundException("User not found.");
     }

@@ -36,4 +36,10 @@ public class UserController {
     public UserSummaryDTO updateUser(@RequestBody UserSaveRequest request) {
         return userService.updateUser(request);
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteUser(@RequestParam("userId") Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 }
