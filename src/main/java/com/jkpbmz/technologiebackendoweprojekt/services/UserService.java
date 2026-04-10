@@ -1,6 +1,7 @@
 package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.User;
+import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.UserMapper;
@@ -25,6 +26,10 @@ public class UserService {
     }
 
     public UserSummaryDTO createUser(UserSaveRequest request) {
+        if (!request.isDataOnly()) {
+            throw new BadRequestException("This endpoint doesn't accept user IDs.");
+        }
+
         checkEmail(request.getEmail());
 
         User user = userMapper.toUser(request);
