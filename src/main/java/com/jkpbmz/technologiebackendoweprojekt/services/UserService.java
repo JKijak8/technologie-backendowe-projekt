@@ -22,6 +22,12 @@ public class UserService {
 
     UserMapper userMapper;
 
+    public UserSummaryDTO fetchUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        return userMapper.toUserSummaryDTO(user);
+    }
+
     public Page<UserSummaryDTO> fetchUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         return users.map(userMapper::toUserSummaryDTO);

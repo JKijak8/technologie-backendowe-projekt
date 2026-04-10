@@ -18,6 +18,11 @@ import java.net.URI;
 public class UserController {
     UserService userService;
 
+    @GetMapping("")
+    public UserSummaryDTO getUser(@RequestParam("userId") Long id){
+        return userService.fetchUser(id);
+    }
+
     @GetMapping("/list")
     public Page<UserSummaryDTO> findUsers(Pageable pageable) {
         return userService.fetchUsers(pageable);
