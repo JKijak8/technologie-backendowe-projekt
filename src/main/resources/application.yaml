@@ -9,6 +9,6 @@ server:
   port: 8443
   ssl:
     key-store: classpath:keystore.p12
-    key-store-password: MocneHaslo2232
+    key-store-password: ${SSL_PASSWORD}
     key-store-type: PKCS12
-    key-alias: localhost
+    key-alias: ${KEY_ALIAS}
