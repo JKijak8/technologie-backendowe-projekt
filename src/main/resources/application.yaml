@@ -5,3 +5,10 @@ spring:
     url: jdbc:postgresql://${DB_ADDRESS}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: MocneHaslo2232
+    key-store-type: PKCS12
+    key-alias: localhost

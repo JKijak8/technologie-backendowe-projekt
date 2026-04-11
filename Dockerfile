@@ -11,5 +11,5 @@ COPY --from=build /project/target/technologie-backendowe-projekt-0.0.1-SNAPSHOT.
 RUN chown -R javauser:javauser /app
 WORKDIR /app
 USER javauser
-EXPOSE 8080
+EXPOSE 8443
 CMD "java" "-jar" "java-application.jar"
