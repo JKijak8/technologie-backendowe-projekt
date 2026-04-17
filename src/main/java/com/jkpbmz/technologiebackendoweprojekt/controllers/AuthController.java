@@ -79,6 +79,17 @@ public class AuthController {
                 tokens.get(ACCESS_TOKEN).getExpiration()));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@CookieValue(value = "refreshToken") String refreshToken) {
+        var jwt = jwtService.parseToken(refreshToken);
+        if (jwt == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        refreshTokenRepository.findById(jwt.toString()).ifPresent(refreshTokenRepository::delete);
+        return ResponseEntity.ok().build();
+    }
+
     private Map<String, Jwt> generateTokens(User user) {
         Map<String, Jwt> tokens = new HashMap<>();
 
