@@ -6,7 +6,10 @@ import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 
 import javax.crypto.SecretKey;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class Jwt {
@@ -25,8 +28,17 @@ public class Jwt {
         return Long.valueOf(claims.getSubject());
     }
 
-    public RoleEnum getRole() {
-        return RoleEnum.valueOf(claims.get("role", String.class));
+    public List<RoleEnum> getRoles() {
+        List<?> rawRoles = claims.get("roles", List.class);
+        if (rawRoles == null || rawRoles.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return rawRoles.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(RoleEnum::valueOf)
+                .collect(Collectors.toList());
     }
 
     public String toString() {
