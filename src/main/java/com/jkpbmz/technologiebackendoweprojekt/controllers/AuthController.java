@@ -11,14 +11,11 @@ import com.jkpbmz.technologiebackendoweprojekt.services.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseCookie;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +48,35 @@ public class AuthController {
 
         Jwt accessToken = tokens.get(ACCESS_TOKEN);
         return ResponseEntity.ok(new JwtResponse(accessToken.toString(), accessToken.getExpiration()));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponse> refresh(@CookieValue(value = "refreshToken") String refreshToken,
+                                               HttpServletResponse response) {
+        var jwt = jwtService.parseToken(refreshToken);
+        if (jwt == null || jwt.isExpired()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        var user = userRepository.findById(jwt.getId()).orElseThrow();
+        var token = user.getRefreshTokens()
+                .stream()
+                .filter(t -> t.getToken().equals(refreshToken))
+                .findFirst()
+                .orElse(null);
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        refreshTokenRepository.delete(token);
+
+        Map<String, Jwt> tokens = generateTokens(user);
+
+        var cookie = generateRefreshCookie(tokens.get(REFRESH_TOKEN).toString());
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new JwtResponse(tokens.get(ACCESS_TOKEN).toString(),
+                tokens.get(ACCESS_TOKEN).getExpiration()));
     }
 
     private Map<String, Jwt> generateTokens(User user) {
