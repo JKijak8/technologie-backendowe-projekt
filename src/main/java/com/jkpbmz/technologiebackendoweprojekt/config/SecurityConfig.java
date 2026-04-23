@@ -5,6 +5,7 @@ import com.jkpbmz.technologiebackendoweprojekt.services.UserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -62,6 +63,19 @@ public class SecurityConfig {
                                 "/auth/refresh",
                                 "/auth/me"
                         ).authenticated()
+                        .requestMatchers(HttpMethod.GET, "/employee/**").hasRole("FORWARDER")
+                        .requestMatchers(
+                                "/employee/**",
+                                "/position/**",
+                                "/user/**"
+                        ).hasRole("MANAGER")
+                        .requestMatchers(
+                                "/client/**",
+                                "/contract/**",
+                                "/course/**",
+                                "/delivery-state/**",
+                                "/load/**"
+                        ).hasAnyRole("FORWARDER", "MANAGER")
                         .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c -> {
