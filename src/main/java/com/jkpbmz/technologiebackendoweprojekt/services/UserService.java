@@ -5,38 +5,26 @@ import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.UserMapper;
+import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserRegisterRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Objects;
 
 @AllArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
-    UserRepository userRepository;
+public class UserService {
+    private final UserRepository userRepository;
 
-    UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Override
-    @NullMarked
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getPassword(),
-                Collections.emptyList());
-    }
+    private final PasswordEncoder passwordEncoder;
 
     public UserSummaryDTO fetchUser(Long id) {
         User user = userRepository.findById(id)
@@ -57,6 +45,17 @@ public class UserService implements UserDetailsService {
         checkEmail(request.getEmail());
 
         User user = userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user = userRepository.save(user);
+
+        return userMapper.toUserSummaryDTO(user);
+    }
+
+    public UserSummaryDTO createUser(UserRegisterRequest request) {
+        checkEmail(request.getEmail());
+
+        User user = userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
 
         return userMapper.toUserSummaryDTO(user);

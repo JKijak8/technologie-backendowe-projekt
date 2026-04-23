@@ -4,10 +4,13 @@ import com.jkpbmz.technologiebackendoweprojekt.config.JwtConfig;
 import com.jkpbmz.technologiebackendoweprojekt.entities.User;
 import com.jkpbmz.technologiebackendoweprojekt.projections.auth.JwtResponse;
 import com.jkpbmz.technologiebackendoweprojekt.projections.auth.LoginRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserRegisterRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.RefreshTokenRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import com.jkpbmz.technologiebackendoweprojekt.services.Jwt;
 import com.jkpbmz.technologiebackendoweprojekt.services.JwtService;
+import com.jkpbmz.technologiebackendoweprojekt.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -16,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +34,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final JwtConfig jwtConfig;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserService userService;
 
     private static final String ACCESS_TOKEN = "access";
     private static final String REFRESH_TOKEN = "refresh";
@@ -88,6 +94,15 @@ public class AuthController {
 
         refreshTokenRepository.findById(jwt.toString()).ifPresent(refreshTokenRepository::delete);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserSummaryDTO> register(@RequestBody UserRegisterRequest request,
+                                                   UriComponentsBuilder uriBuilder) {
+        UserSummaryDTO user = userService.createUser(request);
+        URI uri = uriBuilder.path("/user?userId={id}").buildAndExpand(user.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(user);
     }
 
     private Map<String, Jwt> generateTokens(User user) {
