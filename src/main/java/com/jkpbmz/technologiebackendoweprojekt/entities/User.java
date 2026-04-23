@@ -41,4 +41,7 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Employee employee;
+
+    @OneToMany(mappedBy = "user")
+    private List<RefreshToken> refreshTokens;
 }
