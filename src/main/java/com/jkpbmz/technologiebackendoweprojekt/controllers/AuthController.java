@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -103,6 +105,14 @@ public class AuthController {
         URI uri = uriBuilder.path("/user?userId={id}").buildAndExpand(user.getId()).toUri();
 
         return ResponseEntity.created(uri).body(user);
+    }
+
+    @GetMapping("/me")
+    public UserSummaryDTO me() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
+        Long id = (Long) authentication.getPrincipal();
+        return userService.fetchUser(id);
     }
 
     private Map<String, Jwt> generateTokens(User user) {

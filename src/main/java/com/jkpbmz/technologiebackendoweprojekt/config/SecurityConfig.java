@@ -2,7 +2,6 @@ package com.jkpbmz.technologiebackendoweprojekt.config;
 
 import com.jkpbmz.technologiebackendoweprojekt.filters.JwtAuthenticationFilter;
 import com.jkpbmz.technologiebackendoweprojekt.services.UserDetailsService;
-import com.jkpbmz.technologiebackendoweprojekt.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,12 +50,19 @@ public class SecurityConfig {
                 c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers("/auth/register").permitAll()
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/v3/api-docs/**",
+                        .requestMatchers(
+                                "/auth/register",
+                                "/auth/login",
+                                "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html").permitAll()
-                        .anyRequest().authenticated())
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/auth/logout",
+                                "/auth/refresh",
+                                "/auth/me"
+                        ).authenticated()
+                        .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c -> {
                     c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
