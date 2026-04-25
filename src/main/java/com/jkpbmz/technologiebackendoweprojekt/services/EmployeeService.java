@@ -15,6 +15,7 @@ import com.jkpbmz.technologiebackendoweprojekt.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public class EmployeeService {
     private final UserService userService;
 
     private final EmployeeMapper employeeMapper;
+
+    private final PasswordEncoder passwordEncoder;
 
     public EmployeeDTO fetchEmployee(Long id) {
         Employee employee = employeeRepository.findById(id).orElse(null);
@@ -54,6 +57,10 @@ public class EmployeeService {
         }
         Employee employee = employeeMapper.toEmployee(request, positionService, userRepository);
         userService.checkRoles(employee.getUser().getRoles(), userRoles);
+
+        if (employee.getUser() != null) employee.getUser()
+                .setPassword(passwordEncoder.encode(employee.getUser().getPassword()));
+
         employeeRepository.save(employee);
 
         return employeeMapper.toEmployeeDTO(employee);
@@ -90,6 +97,10 @@ public class EmployeeService {
         }
 
         employeeMapper.updateEmployee(request, employee, positionService, userRepository);
+
+        if  (employee.getUser() != null) employee.getUser()
+                .setPassword(passwordEncoder.encode(employee.getUser().getPassword()));
+
         employeeRepository.save(employee);
         return employeeMapper.toEmployeeDTO(employee);
     }

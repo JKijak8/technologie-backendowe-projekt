@@ -76,6 +76,7 @@ public class UserService {
         checkRoles(user.getRoles(), userRoles);
 
         userMapper.updateUser(request, user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         return userMapper.toUserSummaryDTO(user);
