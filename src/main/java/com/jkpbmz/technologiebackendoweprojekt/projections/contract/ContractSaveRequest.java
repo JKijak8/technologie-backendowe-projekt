@@ -8,4 +8,5 @@ public class ContractSaveRequest {
     private String senderAddress;
     private String deliveryAddress;
     private Long clientId;
+    private Long version;
 }

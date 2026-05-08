@@ -16,4 +16,5 @@ public class CourseDTO {
     private Double cost;
     private List<LoadSummaryDTO> loads;
     private DriverSummaryDTO driver;
+    private Long version;
 }

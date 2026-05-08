@@ -8,4 +8,5 @@ public class ClientSaveRequest {
     private String nip;
     private String phoneNumber;
     private String email;
+    private Long version;
 }

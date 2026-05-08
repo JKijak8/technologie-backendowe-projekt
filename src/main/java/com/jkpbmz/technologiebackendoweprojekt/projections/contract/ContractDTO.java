@@ -10,4 +10,5 @@ public class ContractDTO {
     private String senderAddress;
     private String deliveryAddress;
     private ClientSummaryDTO client;
+    private Long version;
 }

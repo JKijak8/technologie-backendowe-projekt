@@ -12,4 +12,5 @@ public class LoadSaveRequest {
     private Double worth;
     private Long contractId;
     private Long deliveryStateId;
+    private Long version;
 }

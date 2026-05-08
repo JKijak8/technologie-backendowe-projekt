@@ -16,4 +16,5 @@ public class LoadDTO {
     private ContractSummaryDTO contract;
     private DeliveryStateDTO deliveryState;
     private Long courseId;
+    private Long version;
 }

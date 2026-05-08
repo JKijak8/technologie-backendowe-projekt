@@ -10,4 +10,5 @@ public class EmployeeSaveRequest {
     private String phoneNumber;
     private Long position;
     private UserSaveRequest user;
+    private Long version;
 }

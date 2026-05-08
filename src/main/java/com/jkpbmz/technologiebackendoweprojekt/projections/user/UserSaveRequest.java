@@ -17,6 +17,7 @@ public class UserSaveRequest {
     private String email;
     private String password;
     private List<RoleEnum> roles;
+    private Long version;
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public UserSaveRequest(Long id) {

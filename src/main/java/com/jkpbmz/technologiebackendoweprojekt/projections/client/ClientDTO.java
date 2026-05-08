@@ -13,4 +13,5 @@ public class ClientDTO {
     private String phoneNumber;
     private String email;
     private List<ContractSummaryDTO> contracts;
+    private Long version;
 }

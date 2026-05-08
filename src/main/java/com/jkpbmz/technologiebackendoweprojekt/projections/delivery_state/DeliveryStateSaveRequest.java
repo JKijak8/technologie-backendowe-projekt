@@ -8,4 +8,5 @@ public class DeliveryStateSaveRequest {
     private String location;
     private DeliveryStatesEnum deliveryState;
     private String comment;
+    private Long version;
 }

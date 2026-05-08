@@ -11,4 +11,5 @@ public class DeliveryStateDTO {
     private DeliveryStatesEnum deliveryState;
     private String comment;
     private ZonedDateTime lastUpdated;
+    private Long version;
 }

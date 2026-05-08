@@ -16,4 +16,5 @@ public class EmployeeDTO {
     private PositionDTO position;
     private List<CourseSummaryDTO> courses;
     private UserSummaryDTO user;
+    private Long version;
 }

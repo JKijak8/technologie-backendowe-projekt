@@ -11,4 +11,5 @@ public class CourseSaveRequest {
     private String description;
     private Double cost;
     private Long driver;
+    private Long version;
 }

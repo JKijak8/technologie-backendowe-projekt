@@ -10,4 +10,5 @@ public class UserSummaryDTO {
     private Long id;
     private String email;
     private List<RoleEnum> roles;
+    private Long version;
 }
