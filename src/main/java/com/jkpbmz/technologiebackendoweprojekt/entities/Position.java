@@ -20,6 +20,10 @@ public class Position {
     @Column(name = "id")
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "position")
     private String position;
 

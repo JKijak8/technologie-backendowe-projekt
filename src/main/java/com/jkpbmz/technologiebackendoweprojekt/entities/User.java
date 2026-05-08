@@ -23,6 +23,10 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "email")
     private String email;
 

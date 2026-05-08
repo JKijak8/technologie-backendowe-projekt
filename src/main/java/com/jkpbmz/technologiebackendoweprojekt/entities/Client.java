@@ -20,6 +20,10 @@ public class Client {
     @Column(name = "id")
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "name")
     private String name;
 

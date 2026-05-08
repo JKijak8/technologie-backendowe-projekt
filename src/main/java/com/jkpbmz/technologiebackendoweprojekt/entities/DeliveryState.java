@@ -23,6 +23,10 @@ public class DeliveryState {
     @Column(name = "id")
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "location")
     private String location;
 

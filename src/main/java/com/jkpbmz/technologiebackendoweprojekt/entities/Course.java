@@ -21,6 +21,10 @@ public class Course {
     @Column(name = "id")
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "destination")
     private String destination;
 

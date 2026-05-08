@@ -22,6 +22,10 @@ public class Load {
     @Column(name = "id")
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "identifier")
     private String identifier;
 
