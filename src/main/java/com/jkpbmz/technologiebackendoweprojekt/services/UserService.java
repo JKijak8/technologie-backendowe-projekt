@@ -75,8 +75,14 @@ public class UserService {
         if (!Objects.equals(request.getEmail(), user.getEmail())) checkEmail(request.getEmail());
         checkRoles(user.getRoles(), userRoles);
 
+        String lastPassword = user.getPassword();
+
         userMapper.updateUser(request, user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (!Objects.equals(lastPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         userRepository.save(user);
 
         return userMapper.toUserSummaryDTO(user);

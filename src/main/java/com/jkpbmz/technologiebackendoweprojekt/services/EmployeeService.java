@@ -96,10 +96,15 @@ public class EmployeeService {
             ) || request.getUser().isDataOnly()) userService.checkEmail(request.getUser().getEmail());
         }
 
+        String lastPassword = "";
+        if (employee.getUser() != null) {
+            lastPassword = employee.getUser().getPassword();
+        }
+
         employeeMapper.updateEmployee(request, employee, positionService, userRepository);
 
-        if  (employee.getUser() != null) employee.getUser()
-                .setPassword(passwordEncoder.encode(employee.getUser().getPassword()));
+        if (employee.getUser() != null && !Objects.equals(lastPassword, employee.getUser().getPassword()))
+            employee.getUser().setPassword(passwordEncoder.encode(employee.getUser().getPassword()));
 
         employeeRepository.save(employee);
         return employeeMapper.toEmployeeDTO(employee);

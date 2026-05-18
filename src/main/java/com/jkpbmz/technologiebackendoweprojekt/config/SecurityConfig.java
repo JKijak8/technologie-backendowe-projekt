@@ -63,19 +63,20 @@ public class SecurityConfig {
                                 "/auth/refresh",
                                 "/auth/me"
                         ).authenticated()
-                        .requestMatchers(HttpMethod.GET, "/employee/**").hasRole("FORWARDER")
+                        .requestMatchers(HttpMethod.GET, "/employee/**"
+                        ).hasAnyRole("FORWARDER", "MANAGER", "ADMIN")
                         .requestMatchers(
                                 "/employee/**",
                                 "/position/**",
                                 "/user/**"
-                        ).hasRole("MANAGER")
+                        ).hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers(
                                 "/client/**",
                                 "/contract/**",
                                 "/course/**",
                                 "/delivery-state/**",
                                 "/load/**"
-                        ).hasAnyRole("FORWARDER", "MANAGER")
+                        ).hasAnyRole("FORWARDER", "MANAGER", "ADMIN")
                         .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c -> {
