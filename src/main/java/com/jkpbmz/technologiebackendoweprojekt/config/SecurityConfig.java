@@ -56,11 +56,11 @@ public class SecurityConfig {
                                 "/auth/login",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/auth/refresh"
                         ).permitAll()
                         .requestMatchers(
                                 "/auth/logout",
-                                "/auth/refresh",
                                 "/auth/me"
                         ).authenticated()
                         .requestMatchers(HttpMethod.GET, "/employee/**"
