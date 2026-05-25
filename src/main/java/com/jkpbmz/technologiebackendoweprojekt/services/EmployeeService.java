@@ -115,7 +115,9 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id, List<RoleEnum> userRoles) {
         Employee employee = employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Employee not found."));
-        userService.checkRoles(employee.getUser().getRoles(), userRoles);
+        if (employee.getUser() != null) {
+            userService.checkRoles(employee.getUser().getRoles(), userRoles);
+        }
 
         employeeRepository.delete(employee);
     }
