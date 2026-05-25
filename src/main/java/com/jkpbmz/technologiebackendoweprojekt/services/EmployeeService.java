@@ -56,7 +56,10 @@ public class EmployeeService {
             else userService.checkEmail(request.getUser().getEmail());
         }
         Employee employee = employeeMapper.toEmployee(request, positionService, userRepository);
-        userService.checkRoles(employee.getUser().getRoles(), userRoles);
+
+        if (employee.getUser() != null) {
+            userService.checkRoles(employee.getUser().getRoles(), userRoles);
+        }
 
         if (employee.getUser() != null) employee.getUser()
                 .setPassword(passwordEncoder.encode(employee.getUser().getPassword()));
