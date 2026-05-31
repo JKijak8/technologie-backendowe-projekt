@@ -4,6 +4,7 @@ import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
 import com.jkpbmz.technologiebackendoweprojekt.projections.delivery_state.DeliveryStateDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.delivery_state.DeliveryStateSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.services.DeliveryStateService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class DeliveryStateController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DeliveryStateDTO> createDeliveryState(@RequestBody DeliveryStateSaveRequest request,
+    public ResponseEntity<DeliveryStateDTO> createDeliveryState(@RequestBody @Valid DeliveryStateSaveRequest request,
                                                                 UriComponentsBuilder uriBuilder) {
         DeliveryStateDTO dto = deliveryStateService.createDeliveryState(request);
         URI uri = uriBuilder.path("/delivery-state?deliveryStateId={id}").buildAndExpand(dto.getId()).toUri();
@@ -45,7 +46,7 @@ public class DeliveryStateController {
 
     @PutMapping("")
     public DeliveryStateDTO updateDeliveryState(@RequestParam("deliveryStateId") Long deliveryStateId,
-                                                @RequestBody DeliveryStateSaveRequest request) {
+                                                @RequestBody @Valid DeliveryStateSaveRequest request) {
         return deliveryStateService.updateDeliveryState(deliveryStateId, request);
     }
 
