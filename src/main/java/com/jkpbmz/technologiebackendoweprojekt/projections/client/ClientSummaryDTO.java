@@ -7,5 +7,4 @@ public class ClientSummaryDTO {
     private Long id;
     private String name;
     private String nip;
-    private String  deliveryAddress;
 }
