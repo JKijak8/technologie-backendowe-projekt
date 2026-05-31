@@ -33,6 +33,11 @@ public class UserController {
         return userService.fetchUsers(pageable);
     }
 
+    @GetMapping("/unassigned")
+    public List<UserSummaryDTO> getUnassignedUsers() {
+        return userService.fetchUnassignedUsers();
+    }
+
     @PostMapping("")
     public ResponseEntity<UserSummaryDTO> createUser(@RequestHeader(value = "Authorization") String authorization,
                                                      @RequestBody @Valid UserSaveRequest request,

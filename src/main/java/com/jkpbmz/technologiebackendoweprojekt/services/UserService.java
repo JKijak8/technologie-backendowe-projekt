@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -38,6 +39,14 @@ public class UserService {
     public Page<UserSummaryDTO> fetchUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         return users.map(userMapper::toUserSummaryDTO);
+    }
+
+    public List<UserSummaryDTO> fetchUnassignedUsers() {
+        return userRepository
+                .findAllByEmployeeIsNull()
+                .stream()
+                .map(userMapper::toUserSummaryDTO)
+                .collect(Collectors.toList());
     }
 
     public UserSummaryDTO createUser(UserSaveRequest request, List<RoleEnum> userRoles) {
