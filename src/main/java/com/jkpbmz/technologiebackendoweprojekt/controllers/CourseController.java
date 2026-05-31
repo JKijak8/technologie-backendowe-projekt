@@ -5,6 +5,7 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.CourseService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class CourseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<CourseDTO> createCourse(@RequestBody CourseSaveRequest request,
+    public ResponseEntity<CourseDTO> createCourse(@RequestBody @Valid CourseSaveRequest request,
                                                     UriComponentsBuilder uriComponentsBuilder) {
         CourseDTO courseDTO = courseService.createCourse(request);
         URI uri = uriComponentsBuilder.path("/course?courseId={id}").buildAndExpand(courseDTO.getId()).toUri();
@@ -44,7 +45,8 @@ public class CourseController {
     }
 
     @PutMapping("")
-    public CourseDTO updateCourse(@RequestParam("courseId") Long courseId, @RequestBody CourseSaveRequest request) {
+    public CourseDTO updateCourse(@RequestParam("courseId") Long courseId,
+                                  @RequestBody @Valid CourseSaveRequest request) {
         return courseService.updateCourse(courseId, request);
     }
 
