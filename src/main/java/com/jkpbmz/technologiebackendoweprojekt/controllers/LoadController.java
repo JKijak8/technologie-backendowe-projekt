@@ -3,6 +3,7 @@ package com.jkpbmz.technologiebackendoweprojekt.controllers;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.services.LoadService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class LoadController {
     private final LoadService loadService;
 
     @PostMapping("")
-    public ResponseEntity<LoadDTO> createLoad(@RequestBody LoadSaveRequest request,
+    public ResponseEntity<LoadDTO> createLoad(@RequestBody @Valid LoadSaveRequest request,
                                               UriComponentsBuilder uriBuilder) {
         LoadDTO dto = loadService.createLoad(request);
         URI uri = uriBuilder.path("/load?loadId={id}").buildAndExpand(dto.getId()).toUri();
