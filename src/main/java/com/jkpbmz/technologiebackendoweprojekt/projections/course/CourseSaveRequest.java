@@ -1,9 +1,6 @@
 package com.jkpbmz.technologiebackendoweprojekt.projections.course;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
@@ -11,6 +8,7 @@ import java.time.ZonedDateTime;
 @Data
 public class CourseSaveRequest {
     @NotBlank(message = "destination is required")
+    @Size(max = 255, message = "destination must be at most 255 characters long")
     private String destination;
 
     @NotNull(message = "date is required")
