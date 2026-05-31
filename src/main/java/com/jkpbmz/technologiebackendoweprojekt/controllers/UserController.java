@@ -5,6 +5,7 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.user.UserSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.JwtService;
 import com.jkpbmz.technologiebackendoweprojekt.services.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity<UserSummaryDTO> createUser(@RequestHeader(value = "Authorization") String authorization,
-                                                     @RequestBody UserSaveRequest request,
+                                                     @RequestBody @Valid UserSaveRequest request,
                                                      UriComponentsBuilder builder) {
         String token = authorization.replace("Bearer ", "");
         List<RoleEnum> userRoles = jwtService.parseToken(token).getRoles();
