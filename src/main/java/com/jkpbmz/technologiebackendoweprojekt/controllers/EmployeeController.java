@@ -7,6 +7,7 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.employee.EmployeeSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.EmployeeService;
 import com.jkpbmz.technologiebackendoweprojekt.services.JwtService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +43,7 @@ public class EmployeeController {
 
     @PostMapping("")
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestHeader(value = "Authorization") String authorization,
-                                                      @RequestBody EmployeeSaveRequest employeeSaveRequest,
+                                                      @RequestBody @Valid EmployeeSaveRequest employeeSaveRequest,
                                                       UriComponentsBuilder uriComponentsBuilder) {
         String token = authorization.replace("Bearer ", "");
         List<RoleEnum> userRoles = jwtService.parseToken(token).getRoles();
@@ -56,7 +57,7 @@ public class EmployeeController {
     @PutMapping("")
     public EmployeeDTO updateEmployee(@RequestHeader(value = "Authorization") String authorization,
                                       @RequestParam("employeeId") Long employeeId,
-                                      @RequestBody EmployeeSaveRequest employeeSaveRequest) {
+                                      @RequestBody @Valid EmployeeSaveRequest employeeSaveRequest) {
         String token = authorization.replace("Bearer ", "");
         List<RoleEnum> userRoles = jwtService.parseToken(token).getRoles();
 
