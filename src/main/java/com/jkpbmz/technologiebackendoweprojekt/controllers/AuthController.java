@@ -13,6 +13,7 @@ import com.jkpbmz.technologiebackendoweprojekt.services.JwtService;
 import com.jkpbmz.technologiebackendoweprojekt.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class AuthController {
     private static final String REFRESH_TOKEN = "refresh";
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request,
+    public ResponseEntity<JwtResponse> login(@RequestBody @Valid LoginRequest request,
                                              HttpServletResponse response) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -99,7 +100,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserSummaryDTO> register(@RequestBody UserRegisterRequest request,
+    public ResponseEntity<UserSummaryDTO> register(@RequestBody @Valid UserRegisterRequest request,
                                                    UriComponentsBuilder uriBuilder) {
         UserSummaryDTO user = userService.createUser(request);
         URI uri = uriBuilder.path("/user?userId={id}").buildAndExpand(user.getId()).toUri();
