@@ -5,6 +5,7 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.client.ClientSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.ClientService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class ClientController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientSaveRequest request,
+    public ResponseEntity<ClientDTO> createClient(@RequestBody @Valid ClientSaveRequest request,
                                                   UriComponentsBuilder uriBuilder) {
         ClientDTO clientDTO = clientService.createClient(request);
         URI uri = uriBuilder.path("/client?clientId={id}").buildAndExpand(clientDTO.getId()).toUri();
@@ -38,7 +39,7 @@ public class ClientController {
 
     @PutMapping("")
     public ClientDTO updateClient(@RequestParam("clientId") Long clientId,
-                                  @RequestBody ClientSaveRequest request) {
+                                  @RequestBody @Valid ClientSaveRequest request) {
         return clientService.updateClient(clientId, request);
     }
 
