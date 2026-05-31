@@ -4,6 +4,7 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.services.ContractService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class ContractController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ContractDTO> createContract(@RequestBody ContractSaveRequest request,
+    public ResponseEntity<ContractDTO> createContract(@RequestBody @Valid ContractSaveRequest request,
                                                       UriComponentsBuilder uriBuilder) {
         ContractDTO contractDTO = contractService.createContract(request);
         URI uri = uriBuilder.path("/contract?contractId={id}").buildAndExpand(contractDTO.getId()).toUri();
@@ -50,7 +51,7 @@ public class ContractController {
 
     @PutMapping("")
     public ContractDTO updateContract(@RequestParam("contractId") Long contractId,
-                                      @RequestBody ContractSaveRequest request) {
+                                      @RequestBody @Valid ContractSaveRequest request) {
         return contractService.updateContract(contractId, request);
     }
 
