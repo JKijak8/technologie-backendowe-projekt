@@ -6,4 +6,6 @@ import lombok.Data;
 public class ContractSummaryDTO {
     private Long id;
     private String name;
+    private Long clientId;
+    private String clientName;
 }

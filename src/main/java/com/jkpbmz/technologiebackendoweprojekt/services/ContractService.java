@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @AllArgsConstructor
@@ -29,8 +30,13 @@ public class ContractService {
         return contractMapper.toContractDTO(contract);
     }
 
-    public Page<ContractSummaryDTO> fetchContractList(String clientName, String city, Pageable pageable) {
-        Page<Contract> contracts = contractRepository.findAll(pageable);
+    public Page<ContractSummaryDTO> fetchContractList(String clientName, Pageable pageable) {
+        Page<Contract> contracts;
+        if (StringUtils.hasText(clientName)) {
+            contracts = contractRepository.findAllByClient_NameContainingIgnoreCase(clientName, pageable);
+        } else {
+            contracts = contractRepository.findAll(pageable);
+        }
         return contracts.map(contractMapper::toContractSummaryDTO);
     }
 

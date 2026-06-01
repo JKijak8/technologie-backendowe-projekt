@@ -30,14 +30,13 @@ public class ContractController {
     @GetMapping("/list")
     public Page<ContractSummaryDTO> findContractList(
             @RequestParam(required = false) String clientName,
-            @RequestParam(required = false) String city,
             Pageable pageable) {
 
         if (pageable.getPageSize() > MAX_PAGE_SIZE) {
             throw new BadRequestException("Page size exceeds maximum. Maximum allowed is " + MAX_PAGE_SIZE);
         }
 
-       return contractService.fetchContractList(clientName, city, pageable);
+       return contractService.fetchContractList(clientName, pageable);
     }
 
     @PostMapping("")
