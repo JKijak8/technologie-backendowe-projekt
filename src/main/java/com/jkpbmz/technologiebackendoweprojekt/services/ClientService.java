@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -30,8 +31,13 @@ public class ClientService {
         return clientMapper.toClientDTO(client);
     }
 
-    public Page<ClientSummaryDTO> fetchClientList(Pageable pageable) {
-        Page<Client> clients = clientRepository.findAll(pageable);
+    public Page<ClientSummaryDTO> fetchClientList(String nameFilter, Pageable pageable) {
+        Page<Client> clients;
+        if(StringUtils.hasText(nameFilter)) {
+            clients = clientRepository.findByNameContainingIgnoreCase(nameFilter, pageable);
+        } else {
+            clients = clientRepository.findAll(pageable);
+        }
         return clients.map(clientMapper::toClientSummaryDTO);
     }
 

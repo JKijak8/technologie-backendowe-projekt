@@ -50,11 +50,12 @@ public class ClientController {
     }
 
     @GetMapping("/list")
-    public Page<ClientSummaryDTO> getClientList(Pageable pageable) {
+    public Page<ClientSummaryDTO> getClientList(@RequestParam(value = "name", required = false) String nameFilter,
+                                                Pageable pageable) {
         if (pageable.getPageSize() > MAX_PAGE_SIZE) {
             throw new BadRequestException("Page size exceeds maximum. Maximum allowed is " + MAX_PAGE_SIZE);
         }
 
-        return clientService.fetchClientList(pageable);
+        return clientService.fetchClientList(nameFilter, pageable);
     }
 }
