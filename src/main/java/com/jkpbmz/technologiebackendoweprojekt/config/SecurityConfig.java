@@ -91,7 +91,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(
                                 "/auth/logout",
-                                "/auth/me"
+                                "/auth/me",
+                                "/weather/**"
                         ).authenticated()
                         .requestMatchers(HttpMethod.GET, "/employee/**"
                         ).hasAnyRole("FORWARDER", "MANAGER", "ADMIN")

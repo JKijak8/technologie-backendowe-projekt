@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrentWeatherDTO {
-    private List<WeatherData> data;
+    private WeatherData current;
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
