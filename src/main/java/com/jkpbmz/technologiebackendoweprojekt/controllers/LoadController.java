@@ -2,6 +2,7 @@ package com.jkpbmz.technologiebackendoweprojekt.controllers;
 
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadUpdateRequest;
 import com.jkpbmz.technologiebackendoweprojekt.services.LoadService;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSummaryDTO;
 import jakarta.validation.Valid;
@@ -40,6 +41,11 @@ public class LoadController {
         LoadDTO dto = loadService.createLoad(request);
         URI uri = uriBuilder.path("/load?loadId={id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping("")
+    public LoadDTO updateLoad(@RequestParam("loadId") Long loadId, @RequestBody @Valid LoadUpdateRequest request) {
+        return loadService.updateLoad(loadId, request);
     }
 
     @PatchMapping("/assign-to-course")

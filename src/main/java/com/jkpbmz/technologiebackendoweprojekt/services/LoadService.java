@@ -9,6 +9,7 @@ import com.jkpbmz.technologiebackendoweprojekt.mappers.LoadMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadUpdateRequest;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.ContractRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.CourseRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.LoadRepository;
@@ -55,6 +56,16 @@ public class LoadService {
 
         loadRepository.save(load);
         return loadMapper.toLoadDTO(load);
+    }
+
+    public LoadDTO updateLoad(Long loadId, LoadUpdateRequest request) {
+        Load load = loadRepository.findById(loadId).orElseThrow(() -> new NotFoundException("Load not found"));
+        loadMapper.updateLoad(request, load);
+        if(load.getContract() != null) {
+            if (!load.getContract().getId().equals(request.getContractId()))
+                load.setContract(contractRepository.getReferenceById(request.getContractId()));
+        }
+        return loadMapper.toLoadDTO(loadRepository.save(load));
     }
 
     @Transactional

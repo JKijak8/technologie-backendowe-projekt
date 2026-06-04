@@ -6,8 +6,10 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSumm
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSummaryDTO;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadUpdateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -25,6 +27,10 @@ public interface LoadMapper {
     @Mapping(target = "deliveryDate", ignore = true)
     @Mapping(target = "deliveryTime", ignore = true)
     Load toLoad(LoadSaveRequest request);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "course", ignore = true)
+    void updateLoad(LoadUpdateRequest request, @MappingTarget Load load);
 
     @Mapping(source = "contract", target = "contract", qualifiedByName = "getContractSummary")
     LoadSummaryDTO toLoadSummaryDTO(Load load);

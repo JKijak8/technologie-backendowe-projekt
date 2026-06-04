@@ -5,6 +5,8 @@ import com.jkpbmz.technologiebackendoweprojekt.enums.SizeEnum;
 import com.jkpbmz.technologiebackendoweprojekt.projections.contract.ContractSummaryDTO;
 import lombok.Data;
 
+import java.time.ZonedDateTime;
+
 @Data
 public class LoadDTO {
     private Long id;
@@ -17,4 +19,7 @@ public class LoadDTO {
     private DeliveryStatesEnum deliveryState;
     private Long courseId;
     private Long version;
+    private String deliveryTime;
+    private ZonedDateTime sendDate;
+    private ZonedDateTime deliveryDate;
 }
