@@ -57,14 +57,6 @@ CREATE TABLE contracts (
     CONSTRAINT fk_cntr_client FOREIGN KEY (client_id) REFERENCES clients(id)
 );
 
-CREATE TABLE delivery_states (
-    id BIGSERIAL PRIMARY KEY,
-    location VARCHAR(255) NOT NULL,
-    delivery_state STATES NOT NULL,
-    comment TEXT,
-    last_updated TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
 CREATE TABLE courses (
     id BIGSERIAL PRIMARY KEY,
     destination VARCHAR(255) NOT NULL,
