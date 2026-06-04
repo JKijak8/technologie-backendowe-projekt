@@ -9,10 +9,13 @@ import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.LoadMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
+import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSummaryDTO;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.ContractRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.CourseRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.DeliveryStateRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.LoadRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,19 @@ public class LoadService {
     private final DeliveryStateRepository deliveryStateRepository;
     private final CourseRepository courseRepository;
     private final LoadMapper loadMapper;
+
+    @Transactional(readOnly = true)
+    public Page<LoadSummaryDTO> getLoads(Pageable pageable) {
+        return loadRepository.findAll(pageable)
+                .map(loadMapper::toLoadSummaryDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public LoadDTO getLoad(Long loadId) {
+        Load load = loadRepository.findById(loadId)
+                .orElseThrow(() -> new NotFoundException("Load not found"));
+        return loadMapper.toLoadDTO(load);
+    }
 
     @Transactional
     public LoadDTO createLoad(LoadSaveRequest request) {
