@@ -1,5 +1,6 @@
 package com.jkpbmz.technologiebackendoweprojekt.entities;
 
+import com.jkpbmz.technologiebackendoweprojekt.enums.DeliveryStatesEnum;
 import com.jkpbmz.technologiebackendoweprojekt.enums.SizeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,9 +57,10 @@ public class Load {
     @JoinColumn(name = "contract_id")
     private Contract contract;
 
-    @ManyToOne
-    @JoinColumn(name = "state_id")
-    private DeliveryState deliveryState;
+    @Column(name = "delivery_state")
+    @Enumerated(EnumType.STRING)
+    @ColumnTransformer(write = "?::STATES")
+    private DeliveryStatesEnum deliveryState;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
