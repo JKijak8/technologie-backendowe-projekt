@@ -2,7 +2,6 @@ package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Contract;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Course;
-import com.jkpbmz.technologiebackendoweprojekt.entities.DeliveryState;
 import com.jkpbmz.technologiebackendoweprojekt.entities.Load;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
@@ -11,7 +10,6 @@ import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadDTO;
 import com.jkpbmz.technologiebackendoweprojekt.projections.load.LoadSaveRequest;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.ContractRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.CourseRepository;
-import com.jkpbmz.technologiebackendoweprojekt.repositories.DeliveryStateRepository;
 import com.jkpbmz.technologiebackendoweprojekt.repositories.LoadRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,6 @@ import java.util.List;
 public class LoadService {
     private final LoadRepository loadRepository;
     private final ContractRepository contractRepository;
-    private final DeliveryStateRepository deliveryStateRepository;
     private final CourseRepository courseRepository;
     private final LoadMapper loadMapper;
 
@@ -37,12 +34,8 @@ public class LoadService {
         Contract contract = contractRepository.findById(request.getContractId())
                 .orElseThrow(() -> new NotFoundException("Contract not found"));
 
-        DeliveryState deliveryState = deliveryStateRepository.findById(request.getDeliveryStateId())
-                .orElseThrow(() -> new NotFoundException("Delivery State not found"));
-
         Load load = loadMapper.toLoad(request);
         load.setContract(contract);
-        load.setDeliveryState(deliveryState);
 
         loadRepository.save(load);
         return loadMapper.toLoadDTO(load);

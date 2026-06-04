@@ -84,12 +84,11 @@ CREATE TABLE loads (
     weight DECIMAL,
     send_date TIMESTAMPTZ,
     delivery_date TIMESTAMPTZ,
+    delivery_state STATES NOT NULL,
     worth DECIMAL,
     contract_id BIGINT NOT NULL,
-    state_id BIGINT NOT NULL,
     course_id BIGINT,
     CONSTRAINT fk_ld_contract FOREIGN KEY (contract_id) REFERENCES contracts(id),
-    CONSTRAINT fk_ld_state FOREIGN KEY (state_id) REFERENCES delivery_states(id),
     CONSTRAINT fk_ld_course FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 

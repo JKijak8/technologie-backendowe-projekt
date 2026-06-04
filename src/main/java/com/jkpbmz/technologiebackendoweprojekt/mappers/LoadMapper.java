@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = {ContractMapper.class, DeliveryStateMapper.class})
+@Mapper(componentModel = "spring", uses = {ContractMapper.class})
 public interface LoadMapper {
     ContractMapper CONTRACT_MAPPER = Mappers.getMapper(ContractMapper.class);
 
@@ -20,7 +20,6 @@ public interface LoadMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "contract", ignore = true)
-    @Mapping(target = "deliveryState", ignore = true)
     @Mapping(target = "course", ignore = true)
     @Mapping(target = "sendDate", ignore = true)
     @Mapping(target = "deliveryDate", ignore = true)

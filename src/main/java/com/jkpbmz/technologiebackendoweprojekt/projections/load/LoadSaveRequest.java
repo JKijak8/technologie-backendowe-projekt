@@ -1,5 +1,6 @@
 package com.jkpbmz.technologiebackendoweprojekt.projections.load;
 
+import com.jkpbmz.technologiebackendoweprojekt.enums.DeliveryStatesEnum;
 import com.jkpbmz.technologiebackendoweprojekt.enums.SizeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -28,8 +29,7 @@ public class LoadSaveRequest {
     @Positive(message = "contractId must be positive")
     private Long contractId;
 
-    @Positive(message = "deliveryStateId must be positive")
-    private Long deliveryStateId;
+    private DeliveryStatesEnum deliveryState;
 
     @Positive(message = "version must be positive")
     private Long version;
