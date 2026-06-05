@@ -1,6 +1,7 @@
 package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Course;
+import com.jkpbmz.technologiebackendoweprojekt.enums.RoleEnum;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.NotFoundException;
 import com.jkpbmz.technologiebackendoweprojekt.mappers.CourseMapper;
 import com.jkpbmz.technologiebackendoweprojekt.projections.course.CourseDTO;
@@ -12,6 +13,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -29,16 +32,24 @@ public class CourseService {
         return courseMapper.toCourseDTO(course);
     }
 
-    public Page<CourseSummaryDTO> fetchCourseList(Pageable pageable) {
-        Page<Course> coursePage = courseRepository.findAll(pageable);
+    public Page<CourseSummaryDTO> fetchCourseList(Pageable pageable, Long userId, List<RoleEnum> userRoles) {
+        Page<Course> coursePage;
+
+        if (userRoles.contains(RoleEnum.DRIVER)
+                && !userRoles.contains(RoleEnum.ADMIN)
+                && !userRoles.contains(RoleEnum.MANAGER)
+                && !userRoles.contains(RoleEnum.FORWARDER)) {
+            coursePage = courseRepository.findAllByDriver_Id(userId, pageable);
+        } else {
+            coursePage = courseRepository.findAll(pageable);
+        }
         return coursePage.map(courseMapper::toCourseSummaryDTO);
     }
 
     public CourseDTO createCourse(CourseSaveRequest request) {
         Course course = courseMapper.toCourse(request, employeeRepository);
-        courseRepository.save(course);
 
-        return courseMapper.toCourseDTO(course);
+        return courseMapper.toCourseDTO(courseRepository.save(course));
     }
 
     public CourseDTO updateCourse(Long id, CourseSaveRequest request) {
