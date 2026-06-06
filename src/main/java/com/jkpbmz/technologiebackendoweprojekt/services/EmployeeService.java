@@ -1,7 +1,6 @@
 package com.jkpbmz.technologiebackendoweprojekt.services;
 
 import com.jkpbmz.technologiebackendoweprojekt.entities.Employee;
-import com.jkpbmz.technologiebackendoweprojekt.entities.User;
 import com.jkpbmz.technologiebackendoweprojekt.enums.RoleEnum;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.BadRequestException;
 import com.jkpbmz.technologiebackendoweprojekt.exceptions.ConflictException;
@@ -61,7 +60,7 @@ public class EmployeeService {
             userService.checkRoles(employee.getUser().getRoles(), userRoles);
         }
 
-        if (employee.getUser() != null) employee.getUser()
+        if (employee.getUser() != null && !request.getUser().isIdOnly()) employee.getUser()
                 .setPassword(passwordEncoder.encode(employee.getUser().getPassword()));
 
         employeeRepository.save(employee);
