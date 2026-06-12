@@ -48,6 +48,7 @@ public interface CourseMapper {
 
     @Named("getDriver")
     static Employee getDriver(Long id, @Context EmployeeRepository employeeRepository) {
+        if (id == null) return null;
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (employee == null) throw new NotFoundException("Driver not found");
         return employee;
