@@ -1,12 +1,8 @@
 # technologie-backendowe-projekt
 
----
-
 ## What is this repository?
 
 This repository is a **backend** for a mock **transport company management system** made as a university project by [JKijak8](https://github.com/JKijak8), [orthdm](https://github.com/orthdm), and [panmichau](https://github.com/panmichau).
-
----
 
 ## How to run the program
 
@@ -84,8 +80,6 @@ EXTERNAL_API_KEY={Open weather API key}
 ```bash
 java -jar target/{application name}.jar
 ```
-
----
 
 ## Technologies used
 
